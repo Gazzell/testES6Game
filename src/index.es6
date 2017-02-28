@@ -1,5 +1,5 @@
 import * as Pixi from 'pixi.js'
-import {Level} from './level.js'
+import {Level} from './level.es6'
 
 //import * as Pixi_tilemap from 'pixi-tiledmap'
 ( ( ) => {

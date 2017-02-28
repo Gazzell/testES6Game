@@ -4,7 +4,7 @@
   "description": "",
   "main": "bundle/pruebaPixi.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha-webpack --webpack-config webpack.config-test.js \"test/**/*.test.es6\"",
     "build": "./node_modules/.bin/webpack",
     "watchBuild": "./node_modules/.bin/webpack --progress --watch",
     "webServer": "./node_modules/.bin/webpack-dev-server --open"
@@ -15,10 +15,14 @@
     "babel-core": "^6.23.1",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.3.2",
+    "chai": "^3.5.0",
     "eslint": "^3.15.0",
     "eslint-plugin-react": "^6.10.0",
+    "mocha": "^3.2.0",
+    "mocha-webpack": "^0.7.0",
     "pixi.js": "^4.3.5",
     "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.3.0"
+    "webpack-dev-server": "^2.3.0",
+    "webpack-node-externals": "^1.5.4"
   }
 }
