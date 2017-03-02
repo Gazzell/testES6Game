@@ -2,7 +2,7 @@ import * as Pixi from 'pixi.js'
 
 export class Level {
     constructor( params ){
-        this.levelUrl = params.level;
+        this.levelUrl = params? params.level : undefined;
         this.map = null;
         this.width = 0;
         this.height = 0;
@@ -20,7 +20,7 @@ export class Level {
                         this.width = this.map.cols;
                         this.height = this.map.rows;
                         for( let i = 0; i < this.map.map.length; i++){
-                            if( this.map.map[i] === 1 ){
+                            if( this.map.map[i] === 0 ){
                                 this.pillsInMap.add(i);
                             }
                         }
@@ -30,7 +30,15 @@ export class Level {
 
 
                 if( this.levelUrl ){
-                    Pixi.loader.add( [this.levelUrl, './levels/res/floor.png', './levels/res/wall.png'] )
+                    // check for bricks textures
+                    const resArray = [ this.levelUrl ];
+                    if( !Pixi.loader.resources['./levels/res/floor.png'] ){
+                        resArray.push( './levels/res/floor.png');
+                    }
+                    if( !Pixi.loader.resources['./levels/res/wall.png'] ){
+                        resArray.push( './levels/res/wall.png');
+                    }
+                    Pixi.loader.add( resArray )
                     .load( parse );
                 }
             }
@@ -42,7 +50,6 @@ export class Level {
             let node,
                 texture,
                 sprite;
-            debugger;
             for( let x = 0; x < this.width; x++ ){
                 for( let y = 0; y < this.height; y++ ){
                     node = this.__transformToArrayCoords( x, y );
@@ -66,13 +73,21 @@ export class Level {
         createNodes();
     }
 
-    __transformToArrayCoords( x, y ){
-        return y * this.width + x;
+    unload(){
+        this.pixRootNode.destroy( {children: true});
+        this.width = this.height = 0;
+        this.map = undefined;
+        this.pillsInMap.clear();
+        delete Pixi.loader.resources[ this.levelUrl ];
     }
 
-    __transformTo2DCoords( coord ){
+    __transformToArrayCoords( x, y ){
+        return ( x > -1 && x < this.width && y > -1 && y < this.height ) ? y * this.width + x : -1;
+    }
+
+    __transformTo2dCoords( coord ){
         const xC = coord % this.width;
-        return { x: xC, y: ( this.width * this.height - txC ) / this.width };
+        return (coord > -1 && coord < this.width * this.height)? { x: xC, y: ( coord - xC ) / this.width } : -1;
     }
 
     isPillInPosition( x, y ){
