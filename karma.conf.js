@@ -34,13 +34,13 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-          "src/**/*.spec.es6": ["webpack", 'sourcemap']
-      },
-      // webpack configuration
-      webpack: require("./webpack.config.js"),
-      webpackMiddleware: {
-          stats: "errors-only"
-      },
+        "src/**/*.spec.es6": ["webpack", 'sourcemap']
+    },
+    // webpack configuration
+    webpack: require("./webpack.config.js"),
+    webpackMiddleware: {
+        stats: "errors-only"
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'

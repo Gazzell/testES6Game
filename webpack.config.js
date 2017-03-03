@@ -18,7 +18,7 @@ module.exports = {
     },
 
     output: {
-        path: "./dist",
+        path: "/dist",
         filename: "pacman.js",
         pathinfo: true
     },

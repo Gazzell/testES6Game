@@ -38,6 +38,9 @@ export class Level {
                     if( !Pixi.loader.resources['./levels/res/wall.png'] ){
                         resArray.push( './levels/res/wall.png');
                     }
+                    if( !Pixi.loader.resources['./levels/res/pill.png'] ){
+                        resArray.push( './levels/res/pill.png');
+                    }
                     Pixi.loader.add( resArray )
                     .load( parse );
                 }
@@ -50,6 +53,7 @@ export class Level {
             let node,
                 texture,
                 sprite;
+            const pillTexture = Pixi.loader.resources['./levels/res/pill.png'].texture;
             for( let x = 0; x < this.width; x++ ){
                 for( let y = 0; y < this.height; y++ ){
                     node = this.__transformToArrayCoords( x, y );
@@ -64,7 +68,13 @@ export class Level {
                     }
                     sprite = new Pixi.Sprite( texture );
                     sprite.x = x * texture.width - (this.width * texture.width * 0.5);
-                    sprite.y = y * texture.height -(this.height * texture.height * 0.5);
+                    sprite.y = y * texture.height - (this.height * texture.height * 0.5);
+                    if( this.pillsInMap.has(node) ){
+                        const pillSprite = new Pixi.Sprite( pillTexture );
+                        pillSprite.x = texture.width * 0.5 - pillTexture.width * 0.5;
+                        pillSprite.y = texture.height * 0.5 - pillTexture.height * 0.5;
+                        sprite.addChild( pillSprite );
+                    }
                     this.pixRootNode.addChild( sprite );
                 }
             }
@@ -98,8 +108,14 @@ export class Level {
         const arrayCoords = this.__transformToArrayCoords( x, y );
         if( this.pillsInMap.has(arrayCoords) ){
             this.pillsInMap.delete( arrayCoords );
+            this.pixRootNode.children[ arrayCoords ].removeChildren();
         }
         return this.pillsInMap.size;
+    }
+
+    isWalkable( x, y ){
+        const arrayCoord = this.__transformToArrayCoords(x, y);
+        return arrayCoord !== -1? this.map.map[ arrayCoord ] !== 1 : false;
     }
 
     getRootNode(){
