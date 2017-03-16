@@ -40,6 +40,7 @@ export class Player {
             this.pixSprite.x = this.x;
             this.pixSprite.y = this.y;
         }
+        return this;
     }
     setPosition( x, y ){
         this.x = x;
@@ -48,5 +49,6 @@ export class Player {
             this.pixSprite.x = x;
             this.pixSprite.y = y;
         }
+        return this;
     }
 };

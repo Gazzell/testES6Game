@@ -2,20 +2,12 @@ import { expect } from 'chai';
 import {Level} from './level.es6';
 
 describe("Level", () => {
-    context("Level creation", () => {
-        it("Should create level with fake map", () => {
-            const level = new Level({'level': 'testLevelURL'});
+    describe("Level creation", () => {
+        const level = new Level();
+        it("Should create level", () => {
             expect( level ).not.to.be.undefined;
-            expect( level ).to.have.property('levelUrl', 'testLevelURL');
-            expect( level ).to.have.property('width', 0);
-            expect( level ).to.have.property('height', 0);
-            expect( level ).to.have.property('pillsInMap');
-            expect( level ).to.have.deep.property('pillsInMap.size', 0);
-        });
-        it("Level create level with no map", () => {
-            const level = new Level();
-            expect( level ).not.to.be.undefined;
-            expect( level ).to.have.property('levelUrl', undefined);
+            expect( level.levelUrl ).to.be.undefined;
+            expect( level.pixRootNode ).to.be.undefined;
             expect( level ).to.have.property('width', 0);
             expect( level ).to.have.property('height', 0);
             expect( level ).to.have.property('pillsInMap');
@@ -23,9 +15,22 @@ describe("Level", () => {
         });
     });
 
-    context("Map init", () => {
-        const level = new Level({ level:'../test/testLevel.json' });
-        before( () => level.init() );  
+    describe("Level initialization", () => {
+        const level = new Level();
+        before( () => level.init({'level': 'testLevelURL'}) ); 
+        it("Level init level with fake map", () => {
+            expect( level.pixRootNode ).not.to.be.undefined;
+            expect( level ).to.have.property('levelUrl', 'testLevelURL');
+            expect( level ).to.have.property('width', 0);
+            expect( level ).to.have.property('height', 0);
+            expect( level ).to.have.property('pillsInMap');
+            expect( level ).to.have.deep.property('pillsInMap.size', 0);
+        });
+    });
+
+    describe("Map init", () => {
+        const level = new Level();
+        before( () => level.init({ level:'../test/testLevel.json' }) );  
 
         it("Should load json map from file", () => {
             expect( level ).to.have.property('width', 5);
@@ -44,9 +49,9 @@ describe("Level", () => {
         });
     });
 
-    context("Map loading and unloading", () => {
-        const level = new Level({ level:'../test/testLevel.json' });
-        before( () => level.init() ); 
+    describe("Map loading and unloading", () => {
+        const level = new Level();
+        before( () => level.init({ level:'../test/testLevel.json' }) ); 
         
         it("Should create nodes to pixi pixRootNode", () => {
             level.start();
@@ -63,9 +68,9 @@ describe("Level", () => {
         });
     });
 
-    context("Transforming coords", () => {
-        const level = new Level({ level:'../test/testLevel.json' });
-        before( () => level.init() ); 
+    describe("Transforming coords", () => {
+        const level = new Level();
+        before( () => level.init({ level:'../test/testLevel.json' }) ); 
         
         after( () => level.unload() );
 
@@ -100,9 +105,9 @@ describe("Level", () => {
         });
     });
 
-    context("Pills handling", () => {
-        const level = new Level({ level:'../test/testLevel.json' });
-        before( () => level.init() ); 
+    describe("Pills handling", () => {
+        const level = new Level();
+        before( () => level.init({ level:'../test/testLevel.json' }) ); 
         
         after( () => level.unload() );
 
@@ -156,9 +161,9 @@ describe("Level", () => {
         });
     });
 
-    context("Walkable areas handling", () => {
-        const level = new Level({ level:'../test/testLevel.json' });
-        before( () => level.init() ); 
+    describe("Walkable areas handling", () => {
+        const level = new Level();
+        before( () => level.init({ level:'../test/testLevel.json' }) ); 
         
         after( () => level.unload() );
 

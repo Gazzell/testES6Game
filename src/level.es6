@@ -1,22 +1,24 @@
 import * as Pixi from 'pixi.js'
 
 export class Level {
-    constructor( params ){
-        this.levelUrl = params? params.level : undefined;
+    constructor( ){
+        this.levelUrl = undefined;
         this.map = null;
         this.width = 0;
         this.height = 0;
         this.pillsInMap = new Set();
 
-        this.pixRootNode = new Pixi.Container(); 
+        this.pixRootNode = undefined;
     }
 
-    init( ){
+    init( params ){
+        this.levelUrl = params.level;
+        this.pixRootNode = new Pixi.Container(); 
         return new Promise(
             ( resolve, reject ) => {
                 const parse = () => {
                     this.map = Pixi.loader.resources[ this.levelUrl ].data;
-                    if( this.map ){
+                    if( this.map && this.map !== 'NOT FOUND' ){
                         this.width = this.map.cols;
                         this.height = this.map.rows;
                         for( let i = 0; i < this.map.map.length; i++){
@@ -43,6 +45,8 @@ export class Level {
                     }
                     Pixi.loader.add( resArray )
                     .load( parse );
+                } else {
+                    resolve();
                 }
             }
         )

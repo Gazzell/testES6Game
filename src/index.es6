@@ -18,8 +18,13 @@ import {PlayerHeading} from './player.es6'
 			const root = lv1.getRootNode();
 			root.x = 400;
 			root.y = 300;
-			renderer.render( root );
+			update();
 	   }  );
 	
+	
+	const update = () =>{
+		renderer.render( root );
+		requestAnimationFrame( update );
+	}
 
 } )();
